@@ -1,0 +1,23 @@
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+
+import { user } from "./auth.schema";
+
+export const chats = sqliteTable("chats", {
+  id: integer().primaryKey({ autoIncrement: true }),
+  name: text(),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .default(new Date()),
+});
+
+export const messages = sqliteTable("messages", {
+  id: text("id").primaryKey(), // UUID
+  chat_id: text("chat_id")
+    .notNull()
+    .references(() => chats.id),
+  sender_id: text("sender_id")
+    .notNull()
+    .references(() => user.id),
+  content: text("content").notNull(),
+  createdAt: integer("created_at", { mode: "timestamp" }).default(new Date()),
+});
