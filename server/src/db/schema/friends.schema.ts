@@ -1,4 +1,5 @@
 import { sqliteTable, text, integer, index } from "drizzle-orm/sqlite-core";
+import { createInsertSchema, createUpdateSchema } from "drizzle-zod";
 
 import { user } from "./auth.schema";
 
@@ -14,7 +15,10 @@ export const friends = sqliteTable(
     friend_id: integer()
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }), // the user who is friended
-    status: text().$type<FriendShipStatus>().notNull().default("pending"),
+    status: text({ mode: "text", enum: ["pending", "accepted", "blocked"] })
+      .$type<FriendShipStatus>()
+      .notNull()
+      .default("pending"),
     createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
   },
   (table) => [
@@ -24,3 +28,6 @@ export const friends = sqliteTable(
     index("friends_composite_idx").on(table.user_id, table.friend_id),
   ]
 );
+
+export const friendInsertSchema = createInsertSchema(friends);
+export const friendUpdateSchema = createUpdateSchema(friends);

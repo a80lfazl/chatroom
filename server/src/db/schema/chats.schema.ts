@@ -1,4 +1,5 @@
 import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { createInsertSchema } from "drizzle-zod";
 
 import { user } from "./auth.schema";
 
@@ -20,4 +21,12 @@ export const messages = sqliteTable("messages", {
     .references(() => user.id),
   content: text("content").notNull(),
   createdAt: integer("created_at", { mode: "timestamp" }).default(new Date()),
+});
+
+export const chatInsertSchema = createInsertSchema(chats, {
+  name: (s) => s.min(3).max(30),
+});
+
+export const messageInsertSchema = createInsertSchema(messages, {
+  content: (s) => s.max(500),
 });
