@@ -6,6 +6,10 @@ import { GuestRoute } from "./components/routing/GuestRoute";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
+import NotFound from "./pages/NotFound";
+import ChatLayout from "./components/chat/ChatLayout";
+import Chat from "./components/chat/Chat";
+import NoChat from "./components/chat/NoChat";
 
 function App() {
   return (
@@ -19,7 +23,13 @@ function App() {
 
       <Route element={<ProtectedRoute />}>
         <Route path="/profile" element={<Profile />} />
+        <Route element={<ChatLayout />}>
+          <Route path="/chat" element={<NoChat />} />
+          <Route path="/chat/:id" element={<Chat />} />
+        </Route>
       </Route>
+
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
