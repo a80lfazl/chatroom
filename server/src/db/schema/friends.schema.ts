@@ -19,7 +19,9 @@ export const friends = sqliteTable(
       .$type<FriendShipStatus>()
       .notNull()
       .default("pending"),
-    createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+    createdAt: integer("created_at", { mode: "timestamp" })
+      .notNull()
+      .default(new Date()),
   },
   (table) => [
     index("friends_user_id_idx").on(table.user_id),

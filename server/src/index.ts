@@ -7,8 +7,10 @@ import path from "node:path";
 import { showRoutes } from "hono/dev";
 
 import { auth } from "@/lib/auth";
+import { protectRoute } from "./middlewares/protect-route";
+import { friendsRoute } from "./routes/friends.route";
 
-type ENV = {
+export type ENV = {
   Variables: {
     user: typeof auth.$Infer.Session.user | null;
     session: typeof auth.$Infer.Session.session | null;
@@ -34,7 +36,7 @@ app.use(
   })
 );
 
-// get session and user from db, set them to context
+// Get session and user from db, set them to context
 app.use("*", async (c, next) => {
   const session = await auth.api.getSession({ headers: c.req.raw.headers });
 
@@ -64,26 +66,11 @@ app.get("/api/hello", async (c) => {
 });
 
 // --- Protected Routes --- ///
-app.use("/api/*", async (c, next) => {
-  const user = c.get("user");
+app.use("/api/*", protectRoute);
 
-  if (!user) return c.json({ error: "Unauthorized" }, 401);
+app.route("/api", friendsRoute);
 
-  return next();
-});
-
-// This is a test route for authenticated users
-app.get("/api/message", async (c) => {
-  const session = c.get("session");
-  const user = c.get("user");
-
-  return c.json({
-    session,
-    user,
-  });
-});
-
-// serve the root web file for hte fallback
+// Serve the root web file for fallback
 app.get("*", (c) => {
   return c.html(Bun.file(webPath + "/index.html").text());
 });
