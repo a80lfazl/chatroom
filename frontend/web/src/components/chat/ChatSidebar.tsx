@@ -1,27 +1,28 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 
-const fetcher = async () => {
-  const res = await axios.get("http://localhost:3000/api/hello");
-
-  return res.data;
-};
+import { getChats } from "@/lib/api";
 
 export function ChatSidebar() {
-  const { data, isError, error, isPending } = useQuery({
+  const {
+    data: chats,
+    error,
+    status,
+  } = useQuery({
     queryKey: ["chats"],
-    queryFn: fetcher,
+    queryFn: getChats,
   });
 
-  if (isPending) {
+  if (status === "pending") {
     return "...";
-  }
-
-  if (isError) {
+  } else if (status === "error") {
     return error.message;
   }
 
-  console.log(data);
-
-  return <div className="h-full w-[25%]">side</div>;
+  return (
+    <div className="h-full w-[25%]">
+      {(chats.length &&
+        chats.map(({ id, name }) => <div key={id}>{name}</div>)) ||
+        "no chats"}
+    </div>
+  );
 }

@@ -5,8 +5,8 @@ import { user } from "./auth.schema";
 
 export const chats = sqliteTable("chats", {
   id: integer().primaryKey({ autoIncrement: true }),
-  name: text(),
-  createdAt: integer("created_at", { mode: "timestamp" })
+  name: text().notNull(),
+  created_at: integer("created_at", { mode: "timestamp" })
     .notNull()
     .default(new Date()),
 });
@@ -20,7 +20,7 @@ export const messages = sqliteTable("messages", {
     .notNull()
     .references(() => user.id),
   content: text("content").notNull(),
-  createdAt: integer("created_at", { mode: "timestamp" })
+  created_at: integer("created_at", { mode: "timestamp" })
     .notNull()
     .default(new Date()),
 });

@@ -1,4 +1,9 @@
-import { primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import {
+  primaryKey,
+  sqliteTable,
+  integer,
+  text,
+} from "drizzle-orm/sqlite-core";
 import { createInsertSchema, createUpdateSchema } from "drizzle-zod";
 
 import { user } from "./auth.schema";
@@ -10,7 +15,7 @@ export const userChats = sqliteTable(
     user_id: text("user_id")
       .notNull()
       .references(() => user.id),
-    chat_id: text("chat_id")
+    chat_id: integer("chat_id")
       .notNull()
       .references(() => chats.id),
   },

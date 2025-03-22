@@ -12,6 +12,7 @@ import { protectRoute } from "./middlewares/protect-route";
 
 import { friendsRoute } from "./routes/friends.route";
 import { messagesRoute } from "./routes/messages.route";
+import { chatRoute } from "./routes/chat.route";
 
 export type ENV = {
   Variables: {
@@ -73,6 +74,7 @@ app.use("/api/*", protectRoute);
 
 app.route("/api", friendsRoute);
 app.route("/api", messagesRoute);
+app.route("/api", chatRoute);
 
 // Serve the root web file for fallback
 app.get("*", (c) => {
@@ -80,7 +82,7 @@ app.get("*", (c) => {
 });
 
 app.onError((e, c) => {
-  return c.text(e.message);
+  return c.text(e.message, 400);
 });
 
 // development helper code
