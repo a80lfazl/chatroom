@@ -13,7 +13,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-          <div className="w-full h-screen flex flex-col gap-4 p-6">
+          <div className="w-full h-screen flex flex-col gap-4">
             <Header />
             <main className="w-full h-full flex flex-col justify-center items-center">
               {children}

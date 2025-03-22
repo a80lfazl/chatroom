@@ -24,7 +24,7 @@ const Header = () => {
   const { isPending, data } = useSession();
 
   return (
-    <header className="w-full flex items-center justify-between">
+    <header className="w-full flex items-center justify-between p-4">
       <NavLink to={"/"}>
         <h1 className="text-3xl">Your School</h1>
       </NavLink>
