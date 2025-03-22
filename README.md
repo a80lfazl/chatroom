@@ -4,5 +4,6 @@
 
 ### TODO
 
-- [ ] add drizzle-zod plugin, complete friends schema
-- [ ] add zod validator to hono
+- [x] add drizzle-zod plugin, complete schemas
+- [x] add zod validator to hono
+- [ ] add message route

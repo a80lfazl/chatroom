@@ -12,7 +12,7 @@ export const chats = sqliteTable("chats", {
 });
 
 export const messages = sqliteTable("messages", {
-  id: text("id").primaryKey(), // UUID
+  id: integer("id").primaryKey(),
   chat_id: text("chat_id")
     .notNull()
     .references(() => chats.id),
@@ -20,7 +20,9 @@ export const messages = sqliteTable("messages", {
     .notNull()
     .references(() => user.id),
   content: text("content").notNull(),
-  createdAt: integer("created_at", { mode: "timestamp" }).default(new Date()),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .default(new Date()),
 });
 
 export const chatInsertSchema = createInsertSchema(chats, {
@@ -29,4 +31,5 @@ export const chatInsertSchema = createInsertSchema(chats, {
 
 export const messageInsertSchema = createInsertSchema(messages, {
   content: (s) => s.max(500),
+  sender_id: (s) => s.nullish(),
 });

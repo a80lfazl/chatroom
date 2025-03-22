@@ -7,8 +7,11 @@ import path from "node:path";
 import { showRoutes } from "hono/dev";
 
 import { auth } from "@/lib/auth";
+
 import { protectRoute } from "./middlewares/protect-route";
+
 import { friendsRoute } from "./routes/friends.route";
+import { messagesRoute } from "./routes/messages.route";
 
 export type ENV = {
   Variables: {
@@ -69,10 +72,15 @@ app.get("/api/hello", async (c) => {
 app.use("/api/*", protectRoute);
 
 app.route("/api", friendsRoute);
+app.route("/api", messagesRoute);
 
 // Serve the root web file for fallback
 app.get("*", (c) => {
   return c.html(Bun.file(webPath + "/index.html").text());
+});
+
+app.onError((e, c) => {
+  return c.text(e.message);
 });
 
 // development helper code
