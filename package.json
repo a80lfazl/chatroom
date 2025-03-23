@@ -1,0 +1,13 @@
+{
+  "name": "chatroom",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run start.js"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Abolfazl",
+    "email": "amiriabolfazl992@gmail.com"
+  },
+  "readme": "README.md"
+}
