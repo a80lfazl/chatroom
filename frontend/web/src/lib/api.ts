@@ -12,6 +12,6 @@ type Chat = {
   user_id: string;
 };
 
-export async function getChats(): Promise<Chat[]> {
+export async function getChats(): Promise<{ chats: Chat[] }> {
   return api.get("/chat").then((res) => res.data);
 }

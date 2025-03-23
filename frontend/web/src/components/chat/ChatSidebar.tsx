@@ -2,12 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 
 import { getChats } from "@/lib/api";
 
+import { Button } from "../ui/button";
+import { Plus } from "lucide-react";
+import { ChatDialog } from "./ChatDialog";
+
 export function ChatSidebar() {
-  const {
-    data: chats,
-    error,
-    status,
-  } = useQuery({
+  const { data, error, status } = useQuery({
     queryKey: ["chats"],
     queryFn: getChats,
   });
@@ -19,10 +19,18 @@ export function ChatSidebar() {
   }
 
   return (
-    <div className="h-full w-[25%]">
-      {(chats.length &&
-        chats.map(({ id, name }) => <div key={id}>{name}</div>)) ||
-        "no chats"}
+    <div className="h-full w-[25%] flex flex-col">
+      <div className="flex-1">
+        {data.chats.map(({ id, name }) => (
+          <div key={id}>{name}</div>
+        ))}
+      </div>
+
+      <ChatDialog friends={[]}>
+        <Button className="rounded-full">
+          <Plus />
+        </Button>
+      </ChatDialog>
     </div>
   );
 }
